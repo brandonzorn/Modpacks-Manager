@@ -1,5 +1,8 @@
 import sys
 import time
+
+from PySide6.QtCore import Qt
+
 import nlight_res_rc
 import darkdetect
 from PySide6.QtWidgets import QApplication
@@ -24,6 +27,8 @@ def update_theme():
 
 
 if __name__ == '__main__':
+    QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.RoundPreferFloor)
+    QApplication.setStyle('Fusion')
     app = QApplication(sys.argv)
     app.setStyleSheet(get_ui_style(darkdetect.theme()))
     update_theme()
