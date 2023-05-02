@@ -4,6 +4,7 @@ from data.ui.mod_search import Ui_Form
 from modrinthmanager.dialogs.ModInfo import ModInfo
 from modrinthmanager.items.mod_items import Mod
 from modrinthmanager.parsers.Modrinth import Modrinth
+from modrinthmanager.utils.utils import get_mod_preview
 
 
 class ModSearch(QWidget):
@@ -22,6 +23,7 @@ class ModSearch(QWidget):
         self.mods = Modrinth.search(params)
         for mod in self.mods:
             item = QListWidgetItem(mod.get_name())
+            item.setIcon(get_mod_preview(mod))
             self.ui.items_list.addItem(item)
 
     def open_mod_info(self):

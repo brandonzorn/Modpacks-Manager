@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="styles">
+    <file>data/styles/dark/widget_dark.qss</file>
+    <file>data/styles/light/widget_light.qss</file>
+  </qresource>
+</RCC>

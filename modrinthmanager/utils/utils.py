@@ -6,6 +6,7 @@ from PySide6.QtCore import QThreadPool, QRunnable, Slot, Signal, QObject
 from PySide6.QtGui import QPixmap
 
 from modrinthmanager.const.app import APP_NAME
+from modrinthmanager.const.files import Styles
 from modrinthmanager.items.mod_items import Mod
 from modrinthmanager.parsers.Modrinth import Modrinth
 
@@ -43,6 +44,13 @@ def get_mod_preview(mod: Mod) -> QPixmap:
     if not check_file_exists(path, 'preview.jpg'):
         save_file(path, 'preview.jpg', Modrinth.get_preview(mod))
     return QPixmap(get_file(path, 'preview.jpg'))
+
+
+def get_ui_style(style: str):
+    dark = Styles.Dark
+    light = Styles.Light
+    themes = {"Dark": dark, "Light": light}
+    return themes[style]
 
 
 class Signals(QObject):

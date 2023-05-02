@@ -26,6 +26,7 @@ class Ui_Form(object):
         Form.resize(400, 300)
         self.verticalLayout = QVBoxLayout(Form)
         self.verticalLayout.setObjectName(u"verticalLayout")
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.items_list = QListWidget(Form)
         self.items_list.setObjectName(u"items_list")
 
