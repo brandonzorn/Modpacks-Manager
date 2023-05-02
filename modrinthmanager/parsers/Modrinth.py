@@ -12,7 +12,6 @@ class Modrinth:
         response = requests.get(f'{URL_MODRINTH_API}/search', params=params, headers=MODRINTH_HEADERS)
         mods = []
         if response.status_code == 200 and response.json():
-            print(response.json())
             for mod_data in response.json()['hits']:
                 mod = Mod(mod_data['project_id'], mod_data['title'])
                 mod.description = mod_data['description']
