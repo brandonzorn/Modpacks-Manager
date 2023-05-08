@@ -70,31 +70,6 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addWidget(self.btn_main)
 
-        self.btn_x = QPushButton(self.frame)
-        self.btn_x.setObjectName(u"btn_x")
-        sizePolicy.setHeightForWidth(self.btn_x.sizePolicy().hasHeightForWidth())
-        self.btn_x.setSizePolicy(sizePolicy)
-        self.btn_x.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_x.setStyleSheet(u"")
-        self.btn_x.setCheckable(True)
-        self.btn_x.setAutoRepeat(False)
-        self.btn_x.setAutoExclusive(True)
-
-        self.verticalLayout_3.addWidget(self.btn_x)
-
-        self.btn_history = QPushButton(self.frame)
-        self.btn_history.setObjectName(u"btn_history")
-        sizePolicy.setHeightForWidth(self.btn_history.sizePolicy().hasHeightForWidth())
-        self.btn_history.setSizePolicy(sizePolicy)
-        self.btn_history.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_history.setStyleSheet(u"")
-        self.btn_history.setCheckable(True)
-        self.btn_history.setAutoRepeat(False)
-        self.btn_history.setAutoExclusive(True)
-        self.btn_history.setAutoDefault(False)
-
-        self.verticalLayout_3.addWidget(self.btn_history)
-
         self.verticalSpacer = QSpacerItem(17, 17, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout_3.addItem(self.verticalSpacer)
@@ -170,9 +145,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.btn_library.setText("")
+        self.btn_library.setText(QCoreApplication.translate("MainWindow", u"Library", None))
         self.btn_main.setText(QCoreApplication.translate("MainWindow", u"Main", None))
-        self.btn_x.setText("")
-        self.btn_history.setText("")
     # retranslateUi
 

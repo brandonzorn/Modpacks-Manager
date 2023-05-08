@@ -17,20 +17,31 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
     QLineEdit, QListWidget, QListWidgetItem, QPushButton,
-    QSizePolicy, QVBoxLayout, QWidget)
+    QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(400, 300)
-        self.verticalLayout = QVBoxLayout(Form)
-        self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.items_list = QListWidget(Form)
+        Form.resize(479, 300)
+        self.horizontalLayout = QHBoxLayout(Form)
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_4 = QVBoxLayout()
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.frame_4 = QFrame(Form)
+        self.frame_4.setObjectName(u"frame_4")
+        self.frame_4.setFrameShape(QFrame.StyledPanel)
+        self.frame_4.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_5 = QVBoxLayout(self.frame_4)
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.items_list = QListWidget(self.frame_4)
         self.items_list.setObjectName(u"items_list")
 
-        self.verticalLayout.addWidget(self.items_list)
+        self.verticalLayout_5.addWidget(self.items_list)
+
+
+        self.verticalLayout_4.addWidget(self.frame_4)
 
         self.frame_2 = QFrame(Form)
         self.frame_2.setObjectName(u"frame_2")
@@ -80,7 +91,65 @@ class Ui_Form(object):
         self.horizontalLayout_3.addWidget(self.widget_2)
 
 
-        self.verticalLayout.addWidget(self.frame_2)
+        self.verticalLayout_4.addWidget(self.frame_2)
+
+
+        self.horizontalLayout.addLayout(self.verticalLayout_4)
+
+        self.filters_widget = QWidget(Form)
+        self.filters_widget.setObjectName(u"filters_widget")
+        sizePolicy = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.filters_widget.sizePolicy().hasHeightForWidth())
+        self.filters_widget.setSizePolicy(sizePolicy)
+        self.verticalLayout_3 = QVBoxLayout(self.filters_widget)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.frame = QFrame(self.filters_widget)
+        self.frame.setObjectName(u"frame")
+        self.frame.setFrameShape(QFrame.StyledPanel)
+        self.frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout = QVBoxLayout(self.frame)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.label = QLabel(self.frame)
+        self.label.setObjectName(u"label")
+
+        self.verticalLayout.addWidget(self.label)
+
+        self.version_line = QLineEdit(self.frame)
+        self.version_line.setObjectName(u"version_line")
+
+        self.verticalLayout.addWidget(self.version_line)
+
+
+        self.verticalLayout_3.addWidget(self.frame)
+
+        self.frame_3 = QFrame(self.filters_widget)
+        self.frame_3.setObjectName(u"frame_3")
+        self.frame_3.setFrameShape(QFrame.StyledPanel)
+        self.frame_3.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_2 = QVBoxLayout(self.frame_3)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.label_2 = QLabel(self.frame_3)
+        self.label_2.setObjectName(u"label_2")
+
+        self.verticalLayout_2.addWidget(self.label_2)
+
+        self.modloader_line = QLineEdit(self.frame_3)
+        self.modloader_line.setObjectName(u"modloader_line")
+
+        self.verticalLayout_2.addWidget(self.modloader_line)
+
+
+        self.verticalLayout_3.addWidget(self.frame_3)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_3.addItem(self.verticalSpacer)
+
+
+        self.horizontalLayout.addWidget(self.filters_widget)
 
 
         self.retranslateUi(Form)
@@ -90,9 +159,11 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
-        self.search_btn.setText(QCoreApplication.translate("Form", u"Search", None))
-        self.prev_btn.setText(QCoreApplication.translate("Form", u"<", None))
+        self.search_btn.setText("")
+        self.prev_btn.setText("")
         self.page_lbl.setText(QCoreApplication.translate("Form", u"Page", None))
-        self.next_btn.setText(QCoreApplication.translate("Form", u">", None))
+        self.next_btn.setText("")
+        self.label.setText(QCoreApplication.translate("Form", u"Version", None))
+        self.label_2.setText(QCoreApplication.translate("Form", u"Modloader", None))
     # retranslateUi
 

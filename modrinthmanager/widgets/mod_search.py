@@ -19,7 +19,15 @@ class ModSearch(QWidget):
 
     def search(self):
         self.ui.items_list.clear()
-        params = {'query': self.ui.search_line.text(), "facets": '[["categories:fabric"], ["versions:1.19.4"]]'}
+        version = self.ui.version_line.text()
+        mod_loader = self.ui.modloader_line.text()
+        facets = []
+        if version:
+            facets.append(f'["versions:{version}"]')
+        if mod_loader:
+            facets.append(f'["categories:{mod_loader}"]')
+        params = {'query': self.ui.search_line.text(),
+                  "facets": f'[{", ".join(facets)}]' if facets else None}
         self.mods = Modrinth.search(params)
         for mod in self.mods:
             item = QListWidgetItem(mod.get_name())
