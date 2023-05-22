@@ -1,9 +1,10 @@
-from PySide6.QtCore import Qt, QSize
+from PySide6.QtCore import Qt, QSize, Slot
 from PySide6.QtWidgets import QDialog, QListWidgetItem
 
 from data.ui.mod_info import Ui_Dialog
 from modrinthmanager.items.mod_items import Mod
 from modrinthmanager.parsers.Modrinth import Modrinth
+from modrinthmanager.utils import Database
 from modrinthmanager.utils.utils import save_version, get_mod_preview
 
 
@@ -16,8 +17,15 @@ class ModInfo(QDialog):
         self.ui.name_lbl.setText(mod.get_name())
         self.ui.description_text.setText(mod.description)
         self.ui.items_list.doubleClicked.connect(self.download)
+        self.ui.add_btn.clicked.connect(self.change_favourite)
+
+        self.db = Database()
+
         self.mod_pixmap = None
         self.mod = mod
+
+        self.db.add_mod(self.mod)
+
         self.versions = []
         self.set_icon()
         self.get_versions()
@@ -46,3 +54,10 @@ class ModInfo(QDialog):
     def download(self):
         version = self.versions[self.ui.items_list.currentIndex().row()]
         save_version(self.mod, version, Modrinth.get_version(version))
+
+    @Slot()
+    def change_favourite(self):
+        if self.db.check_mod_modpack(self.mod):
+            self.db.rem_mod_modpack(self.mod)
+        else:
+            self.db.add_mod_modpack(self.mod)

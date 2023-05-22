@@ -26,50 +26,50 @@ class Database:
 
     @with_lock_thread(lock)
     def add_mod(self, mod: Mod):
-        self.__cur.execute("INSERT INTO manga VALUES(?, ?, ?, ?, ?);",
+        self.__cur.execute("INSERT INTO mods VALUES(?, ?, ?, ?, ?);",
                            (mod.id, mod.mod_id, 0, mod.name, mod.description))
         self.__con.commit()
 
     @with_lock_thread(lock)
-    def add_mangas(self, mods: list[Mod]):
+    def add_mods(self, mods: list[Mod]):
         for mod in mods:
-            self.__cur.execute("INSERT INTO manga VALUES(?, ?, ?, ?, ?);",
+            self.__cur.execute("INSERT INTO mods VALUES(?, ?, ?, ?, ?);",
                                (mod.id, mod.mod_id, 0, mod.name, mod.description))
         self.__con.commit()
 
-    def get_manga(self, manga_id: str):
-        x = self.__cur.execute(f"SELECT * FROM mods WHERE id = '{manga_id}'").fetchone()
+    def get_mod(self, mod_id: str):
+        x = self.__cur.execute(f"SELECT * FROM mods WHERE id = '{mod_id}'").fetchone()
         content_id = x[1]
         catalog_id = x[2]
         name = x[3]
         mod = Mod(content_id, name)
-        mod.description = x[5]
+        mod.description = x[4]
         return mod
 
     @with_lock_thread(lock)
-    def add_manga_library(self, mod: Mod, lib_list):
-        self.__cur.execute(f"INSERT INTO library VALUES(?, ?);", (mod.id, lib_list.value))
+    def add_mod_modpack(self, mod: Mod, modpack="Test"):
+        self.__cur.execute(f"INSERT INTO modpacks VALUES(?, ?);", (mod.id, modpack))
         self.__con.commit()
 
-    # @with_lock_thread(lock)
-    # def get_manga_library(self, lib_list) -> list[Mod]:
-    #     a = self.__cur.execute(f"SELECT manga_id FROM library WHERE list = '{lib_list.value}';").fetchall()
-    #     mangas = []
-    #     for i in a[::-1]:
-    #         mangas.append(self.get_manga(i[0]))
-    #     return mangas
+    @with_lock_thread(lock)
+    def get_mods_modpack(self, modpack="Test") -> list[Mod]:
+        a = self.__cur.execute(f"SELECT mod_id FROM modpacks;").fetchall()
+        mods = []
+        for i in a[::-1]:
+            mods.append(self.get_mod(i[0]))
+        return mods
 
    #  @with_lock_thread(lock)
    #  def get_manga_library_list(self, mod: Mod) -> LibList:
-   #      a = self.__cur.execute(f"SELECT list FROM library WHERE manga_id = '{mod.id}';").fetchone()
+   #      a = self.__cur.execute(f"SELECT list FROM modpacks WHERE manga_id = '{mod.id}';").fetchone()
    #      return LibList(a[0])
 
     @with_lock_thread(lock)
-    def check_manga_library(self, mod: Mod) -> bool:
-        a = self.__cur.execute(f"SELECT list FROM library WHERE manga_id = '{mod.id}';").fetchone()
+    def check_mod_modpack(self, mod: Mod) -> bool:
+        a = self.__cur.execute(f"SELECT modpack FROM modpacks WHERE mod_id = '{mod.id}';").fetchone()
         return bool(a)
 
     @with_lock_thread(lock)
-    def rem_manga_library(self, mod: Mod):
-        self.__cur.execute(f"DELETE FROM library WHERE manga_id = '{mod.id}';")
+    def rem_mod_modpack(self, mod: Mod):
+        self.__cur.execute(f"DELETE FROM modpacks WHERE mod_id = '{mod.id}';")
         self.__con.commit()

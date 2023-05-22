@@ -17,6 +17,9 @@ class ModSearch(QWidget):
         self.info = None
         self.mods: list[Mod] = []
 
+    def setup(self):
+        self.search()
+
     def search(self):
         self.ui.items_list.clear()
         version = self.ui.version_line.text()

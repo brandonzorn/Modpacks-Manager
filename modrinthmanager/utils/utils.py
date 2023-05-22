@@ -12,7 +12,7 @@ from modrinthmanager.parsers.Modrinth import Modrinth
 
 
 def save_version(mod: Mod, version: ModVersion, content):
-    path = f'{platformdirs.user_data_dir()}/{APP_NAME}/{mod.get_name()}'
+    path = f'Downloads/{mod.get_name()}'
     if not os.path.exists(path):
         os.makedirs(path)
     with open(f"{path}/{mod.get_name()} {version.version}.jar", 'wb') as ver:
