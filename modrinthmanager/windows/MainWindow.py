@@ -5,13 +5,11 @@ from modrinthmanager.widgets.mod_search import ModSearch
 from modrinthmanager.widgets.modpacks import ModpacksWidget
 
 
-class MainWindow(QMainWindow):
+class ParentWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-
-        self.setMinimumSize(QSize(self.screen().size().width() // 2, self.screen().size().height() // 2))
 
         self.search_wid = ModSearch()
         self.modpacks_wid = ModpacksWidget()
@@ -30,3 +28,8 @@ class MainWindow(QMainWindow):
             self.ui.top_item.removeWidget(self.ui.top_item.currentWidget())
         self.ui.top_item.addWidget(widget)
         self.ui.top_item.setCurrentWidget(widget)
+
+    def set_min_size_by_screen(self):
+        self.setMinimumSize(QSize(
+            self.screen().size().width() // 2,
+            self.screen().size().height() // 2))

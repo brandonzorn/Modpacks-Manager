@@ -46,7 +46,11 @@ class ModSearch(QWidget):
         self.cur_page -= 1
         self.get_content()
 
+    def update_page(self):
+        self.ui.page_lbl.setText(f"{'Page'} {self.cur_page}")
+
     def get_content(self):
+        self.update_page()
         self._get_content_thread.terminate()
         self._get_content_thread.wait()
         self._get_content_thread.start()
