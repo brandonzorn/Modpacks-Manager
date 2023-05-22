@@ -20,3 +20,14 @@ class ModVersion:
 
     def get_name(self):
         return f'{self.name}'
+
+
+class Modpack:
+    def __init__(self, name, version, modloader, mods: list[Mod]):
+        self.name = name
+        self.version = version
+        self.modloader = modloader
+        self.mods = mods
+
+    def get_name(self):
+        return f"{self.name}-{self.modloader} {self.version}"

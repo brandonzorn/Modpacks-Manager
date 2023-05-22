@@ -7,16 +7,21 @@ from PySide6.QtGui import QPixmap
 
 from modrinthmanager.consts.app import APP_NAME
 from modrinthmanager.consts.files import Styles
-from modrinthmanager.items.mod_items import Mod, ModVersion
+from modrinthmanager.items.mod_items import Mod, ModVersion, Modpack
 from modrinthmanager.parsers.Modrinth import Modrinth
 
 
-def save_version(mod: Mod, version: ModVersion, content):
-    path = f'Downloads/{mod.get_name()}'
+def save_version(modpack: Modpack, version: ModVersion, content):
+    path = f'Downloads/Test'
     if not os.path.exists(path):
         os.makedirs(path)
-    with open(f"{path}/{mod.get_name()} {version.version}.jar", 'wb') as ver:
+    with open(f"{path}/{modpack.name} {version.version}.jar", 'wb') as ver:
         ver.write(content)
+
+
+def check_version_exists(modpack: Modpack, version: ModVersion):
+    path = f'Downloads/Test'
+    return os.path.exists(f"{path}/{modpack.name} {version.version}.jar")
 
 
 def get_file(path, file_name):

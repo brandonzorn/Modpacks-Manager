@@ -20,7 +20,7 @@ def update_theme():
         theme = darkdetect.theme()
         while True:
             time.sleep(1)
-            if darkdetect.theme() != theme or app.applicationState() == app.applicationState().ApplicationInactive:
+            if darkdetect.theme() != theme:
                 return
 
     Worker(target=theme_updater, callback=set_style).start()
@@ -31,6 +31,6 @@ if __name__ == '__main__':
     QApplication.setStyle('Fusion')
     app = QApplication(sys.argv)
     app.setStyleSheet(get_ui_style(darkdetect.theme()))
-    update_theme()
+    # update_theme()
     window = MainWindow()
     sys.exit(app.exec())

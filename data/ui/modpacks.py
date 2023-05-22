@@ -15,9 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QListWidget,
-    QListWidgetItem, QPushButton, QSizePolicy, QSpacerItem,
-    QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
+    QListWidget, QListWidgetItem, QProgressBar, QPushButton,
+    QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -29,6 +29,11 @@ class Ui_Form(object):
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.frame_4 = QFrame(Form)
         self.frame_4.setObjectName(u"frame_4")
+        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.frame_4.sizePolicy().hasHeightForWidth())
+        self.frame_4.setSizePolicy(sizePolicy)
         self.frame_4.setFrameShape(QFrame.StyledPanel)
         self.frame_4.setFrameShadow(QFrame.Raised)
         self.verticalLayout_5 = QVBoxLayout(self.frame_4)
@@ -56,6 +61,23 @@ class Ui_Form(object):
 
         self.verticalLayout.addItem(self.verticalSpacer)
 
+        self.cur_mod = QLabel(self.frame)
+        self.cur_mod.setObjectName(u"cur_mod")
+
+        self.verticalLayout.addWidget(self.cur_mod)
+
+        self.download_progress = QProgressBar(self.frame)
+        self.download_progress.setObjectName(u"download_progress")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.download_progress.sizePolicy().hasHeightForWidth())
+        self.download_progress.setSizePolicy(sizePolicy1)
+        self.download_progress.setMaximum(0)
+        self.download_progress.setValue(0)
+
+        self.verticalLayout.addWidget(self.download_progress)
+
 
         self.horizontalLayout.addWidget(self.frame)
 
@@ -68,5 +90,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
         self.download.setText(QCoreApplication.translate("Form", u"Download", None))
+        self.cur_mod.setText("")
+        self.download_progress.setFormat(QCoreApplication.translate("Form", u"%v/%m", None))
     # retranslateUi
 

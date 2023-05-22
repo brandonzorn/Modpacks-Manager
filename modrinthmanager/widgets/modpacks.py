@@ -1,25 +1,34 @@
-from PySide6.QtCore import Slot
+from PySide6.QtCore import Slot, Signal
 from PySide6.QtWidgets import QWidget, QListWidgetItem
 from data.ui.modpacks import Ui_Form
 from modrinthmanager.items import Mod
+from modrinthmanager.items.mod_items import Modpack
 from modrinthmanager.parsers.LocalLib import LocalLib
 from modrinthmanager.parsers.Modrinth import Modrinth
-from modrinthmanager.utils.utils import get_mod_preview, save_version
+from modrinthmanager.utils.threads import Thread
+from modrinthmanager.utils.utils import get_mod_preview, save_version, check_version_exists
 
 
 class ModpacksWidget(QWidget):
+
+    _progress_signal = Signal(Mod)
+
     def __init__(self):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.mods: list[Mod] = []
         self.catalog = LocalLib()
-        self.ui.download.clicked.connect(self.download_all)
+        self._progress_signal.connect(self.update_download_info)
+        self._download_all_thread = Thread(target=self.download_all, callback=self.finish_download_info)
+
+        self.ui.download.clicked.connect(self.start_download)
 
     def setup(self):
         self.update_content()
 
     def update_content(self):
+        self.ui.items_list.clear()
         self.mods = self.catalog.search_mods()
         for mod in self.mods:
             item = QListWidgetItem(mod.get_name())
@@ -27,7 +36,25 @@ class ModpacksWidget(QWidget):
             self.ui.items_list.addItem(item)
 
     @Slot()
+    def start_download(self):
+        self._download_all_thread.terminate()
+        self._download_all_thread.wait()
+        self.ui.download_progress.setMaximum(len(self.mods))
+        self._download_all_thread.start()
+
+    def update_download_info(self, mod):
+        self.ui.cur_mod.setText(mod.get_name())
+        self.ui.download_progress.setValue(self.mods.index(mod) + 1)
+
+    def finish_download_info(self):
+        self.ui.cur_mod.setText("Complete")
+        self.ui.download_progress.setMaximum(0)
+        self.ui.download_progress.setValue(0)
+
     def download_all(self):
         for mod in self.mods:
+            self._progress_signal.emit(mod)
+            modpack = Modpack(mod.get_name(), '1.19.2', 'Fabric', [])
             version = Modrinth.get_versions(mod)[0]
-            save_version(mod, version, Modrinth.get_version(version))
+            if not check_version_exists(modpack, version):
+                save_version(modpack, version, Modrinth.get_version(version))
