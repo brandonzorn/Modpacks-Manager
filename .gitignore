@@ -1,4 +1,9 @@
-.*pyc
+*.pyc
 /ModrinthManagerData
 /.idea
 /Downloads
+/dist
+/build
+ModM*.bat
+ModM*.sh
+ModrinthManager.spec
