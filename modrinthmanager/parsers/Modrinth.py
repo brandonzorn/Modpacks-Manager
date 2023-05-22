@@ -20,12 +20,13 @@ class Modrinth:
         return mods
 
     @staticmethod
-    def get_versions(mod: Mod):
-        params = {"loaders": '["fabric"]', "game_versions": '["1.19.2"]'}
+    def get_versions(mod: Mod, modpack=None):
+        params = {}
+        if modpack:
+            params = {"loaders": f'["{modpack.modloader}"]', "game_versions": f'["{modpack.version}"]'}
         response = requests.get(f'{URL_MODRINTH_API}/project/{mod.mod_id}/version',
                                 params=params, headers=MODRINTH_HEADERS)
         versions = []
-
         if response.status_code == 200 and response.json():
             for version_data in response.json():
                 version = ModVersion(None, version_data["name"], version_data["version_number"],

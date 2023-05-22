@@ -39,8 +39,11 @@ class ModpacksWidget(QWidget):
     def start_download(self):
         self._download_all_thread.terminate()
         self._download_all_thread.wait()
-        self.ui.download_progress.setMaximum(len(self.mods))
-        self._download_all_thread.start()
+        if self.ui.version_line.text() and self.ui.modloader_line.text():
+            self.ui.download_progress.setMaximum(len(self.mods))
+            self._download_all_thread.start()
+        else:
+            self.ui.cur_mod.setText("Enter modloader name and minecraft version")
 
     def update_download_info(self, mod):
         self.ui.cur_mod.setText(mod.get_name())
@@ -52,9 +55,13 @@ class ModpacksWidget(QWidget):
         self.ui.download_progress.setValue(0)
 
     def download_all(self):
+        version = self.ui.version_line.text()
+        loader = self.ui.modloader_line.text()
         for mod in self.mods:
             self._progress_signal.emit(mod)
-            modpack = Modpack(mod.get_name(), '1.19.2', 'Fabric', [])
-            version = Modrinth.get_versions(mod)[0]
-            if not check_version_exists(modpack, version):
-                save_version(modpack, version, Modrinth.get_version(version))
+            modpack = Modpack(mod.get_name(), version, loader, [])
+            mod_versions = Modrinth.get_versions(mod, modpack)
+            if mod_versions:
+                mod_version = mod_versions[0]
+                if not check_version_exists(modpack, mod_version):
+                    save_version(modpack, mod_version, Modrinth.get_version(mod_version))
