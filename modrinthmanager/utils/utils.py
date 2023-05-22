@@ -5,17 +5,17 @@ import platformdirs
 from PySide6.QtCore import QThreadPool, QRunnable, Slot, Signal, QObject
 from PySide6.QtGui import QPixmap
 
-from modrinthmanager.const.app import APP_NAME
-from modrinthmanager.const.files import Styles
-from modrinthmanager.items.mod_items import Mod
+from modrinthmanager.consts.app import APP_NAME
+from modrinthmanager.consts.files import Styles
+from modrinthmanager.items.mod_items import Mod, ModVersion
 from modrinthmanager.parsers.Modrinth import Modrinth
 
 
-def save_version(mod, version, content):
+def save_version(mod: Mod, version: ModVersion, content):
     path = f'{platformdirs.user_data_dir()}/{APP_NAME}/{mod.get_name()}'
     if not os.path.exists(path):
         os.makedirs(path)
-    with open(f"{path}/{version.name}.jar", 'wb') as ver:
+    with open(f"{path}/{mod.get_name()} {version.version}.jar", 'wb') as ver:
         ver.write(content)
 
 

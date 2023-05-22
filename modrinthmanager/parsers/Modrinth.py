@@ -21,7 +21,7 @@ class Modrinth:
 
     @staticmethod
     def get_versions(mod: Mod):
-        params = {"loaders": '["fabric"]', "game_versions": '["1.19.4"]'}
+        params = {"loaders": '["fabric"]', "game_versions": '["1.19.2"]'}
         response = requests.get(f'{URL_MODRINTH_API}/project/{mod.mod_id}/version',
                                 params=params, headers=MODRINTH_HEADERS)
         versions = []
