@@ -62,7 +62,7 @@ class ModSearch(QWidget):
         if version:
             facets.append(f'["versions:{version}"]')
         if mod_loader:
-            facets.append(f'["categories:{mod_loader}"]')
+            facets.append(f'["categories:{mod_loader.lower()}"]')
         params = {'query': self.ui.search_line.text(), 'offset': (self.cur_page - 1) * 10,
                   "facets": f'[{", ".join(facets)}]' if facets else None}
         self.mods = Modrinth.search(params)

@@ -30,6 +30,7 @@ class ModpacksWidget(QWidget):
     def update_content(self):
         self.ui.items_list.clear()
         self.mods = self.catalog.search_mods()
+        self.mods.sort(key=lambda x: x.get_name())
         for mod in self.mods:
             item = QListWidgetItem(mod.get_name())
             item.setIcon(get_mod_preview(mod))
@@ -56,7 +57,7 @@ class ModpacksWidget(QWidget):
 
     def download_all(self):
         version = self.ui.version_line.text()
-        loader = self.ui.modloader_line.text()
+        loader = self.ui.modloader_line.text().lower()
         for mod in self.mods:
             self._progress_signal.emit(mod)
             modpack = Modpack(mod.get_name(), version, loader, [])
@@ -65,3 +66,5 @@ class ModpacksWidget(QWidget):
                 mod_version = mod_versions[0]
                 if not check_version_exists(modpack, mod_version):
                     save_version(modpack, mod_version, Modrinth.get_version(mod_version))
+            else:
+                print(f"No {mod.get_name()} found for minecraft {version}-{loader}")
