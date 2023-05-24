@@ -15,9 +15,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
-    QLineEdit, QListWidget, QListWidgetItem, QPushButton,
-    QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
+    QLabel, QLineEdit, QListWidget, QListWidgetItem,
+    QPushButton, QSizePolicy, QSpacerItem, QVBoxLayout,
+    QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -106,43 +107,43 @@ class Ui_Form(object):
         self.verticalLayout_3 = QVBoxLayout(self.filters_widget)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.frame = QFrame(self.filters_widget)
-        self.frame.setObjectName(u"frame")
-        self.frame.setFrameShape(QFrame.StyledPanel)
-        self.frame.setFrameShadow(QFrame.Raised)
-        self.verticalLayout = QVBoxLayout(self.frame)
+        self.version_frame = QFrame(self.filters_widget)
+        self.version_frame.setObjectName(u"version_frame")
+        self.version_frame.setFrameShape(QFrame.StyledPanel)
+        self.version_frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout = QVBoxLayout(self.version_frame)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.label = QLabel(self.frame)
+        self.label = QLabel(self.version_frame)
         self.label.setObjectName(u"label")
 
         self.verticalLayout.addWidget(self.label)
 
-        self.version_line = QLineEdit(self.frame)
+        self.version_line = QLineEdit(self.version_frame)
         self.version_line.setObjectName(u"version_line")
 
         self.verticalLayout.addWidget(self.version_line)
 
 
-        self.verticalLayout_3.addWidget(self.frame)
+        self.verticalLayout_3.addWidget(self.version_frame)
 
-        self.frame_3 = QFrame(self.filters_widget)
-        self.frame_3.setObjectName(u"frame_3")
-        self.frame_3.setFrameShape(QFrame.StyledPanel)
-        self.frame_3.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_2 = QVBoxLayout(self.frame_3)
+        self.modloader_frame = QFrame(self.filters_widget)
+        self.modloader_frame.setObjectName(u"modloader_frame")
+        self.modloader_frame.setFrameShape(QFrame.StyledPanel)
+        self.modloader_frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_2 = QVBoxLayout(self.modloader_frame)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.label_2 = QLabel(self.frame_3)
+        self.label_2 = QLabel(self.modloader_frame)
         self.label_2.setObjectName(u"label_2")
 
         self.verticalLayout_2.addWidget(self.label_2)
 
-        self.modloader_line = QLineEdit(self.frame_3)
-        self.modloader_line.setObjectName(u"modloader_line")
+        self.modloader_grid = QGridLayout()
+        self.modloader_grid.setObjectName(u"modloader_grid")
 
-        self.verticalLayout_2.addWidget(self.modloader_line)
+        self.verticalLayout_2.addLayout(self.modloader_grid)
 
 
-        self.verticalLayout_3.addWidget(self.frame_3)
+        self.verticalLayout_3.addWidget(self.modloader_frame)
 
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 

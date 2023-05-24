@@ -3,14 +3,14 @@ from PySide6.QtWidgets import QDialog, QListWidgetItem
 
 from data.ui.mod_info import Ui_Dialog
 from modrinthmanager.items.mod_items import Mod, Modpack
-from modrinthmanager.parsers.Modrinth import Modrinth
+from modrinthmanager.parsers import CurseForge
 from modrinthmanager.utils import Database
 from modrinthmanager.utils.utils import save_version, get_mod_preview, check_version_exists
 
 
 class ModInfo(QDialog):
-    def __init__(self, mod: Mod):
-        super().__init__()
+    def __init__(self, mod: Mod, parent=None):
+        super().__init__(parent=parent)
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.ui.items_list.doubleClicked.connect(self.download)
@@ -19,6 +19,7 @@ class ModInfo(QDialog):
         self.db = Database()
         self.mod_pixmap = None
         self.mod = mod
+        self.catalog = CurseForge
         self.db.add_mod(self.mod)
         self.versions = []
 
@@ -49,7 +50,7 @@ class ModInfo(QDialog):
         self.ui.icon_lbl.setPixmap(pixmap)
 
     def get_versions(self):
-        self.versions = Modrinth.get_versions(self.mod)
+        self.versions = self.catalog.get_versions(self.mod)
         for version in self.versions:
             item = QListWidgetItem(version.get_name())
             self.ui.items_list.addItem(item)
@@ -58,7 +59,7 @@ class ModInfo(QDialog):
         modpack = Modpack(self.mod.get_name(), '1.19.2', 'Fabric', [])
         version = self.versions[self.ui.items_list.currentIndex().row()]
         if not check_version_exists(modpack, version):
-            save_version(modpack, version, Modrinth.get_version(version))
+            save_version(modpack, version, self.catalog.get_version(version))
 
     @Slot()
     def change_favourite(self):

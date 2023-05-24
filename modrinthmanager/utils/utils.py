@@ -9,13 +9,17 @@ from modrinthmanager.consts.app import APP_NAME
 from modrinthmanager.consts.files import Styles
 from modrinthmanager.items.mod_items import Mod, ModVersion, Modpack
 from modrinthmanager.parsers.Modrinth import Modrinth
+from modrinthmanager.utils.catalog_manager import get_catalog
 
 
 def save_version(modpack: Modpack, version: ModVersion, content):
     path = f'Downloads/Test'
     if not os.path.exists(path):
         os.makedirs(path)
-    with open(f"{path}/{modpack.name} {version.version}.jar", 'wb') as ver:
+    filename = f"{modpack.name}"
+    if version.version:
+        filename += f" {version.version}"
+    with open(f"{path}/{filename}.jar", 'wb') as ver:
         ver.write(content)
 
 
@@ -47,7 +51,7 @@ def save_file(path, file_name, file_content):
 def get_mod_preview(mod: Mod) -> QPixmap:
     path = f'images/{"Modrinth"}/mods/{mod.mod_id}'
     if not check_file_exists(path, 'preview.jpg'):
-        save_file(path, 'preview.jpg', Modrinth.get_preview(mod))
+        save_file(path, 'preview.jpg', get_catalog(mod.catalog_id).get_preview(mod))
     return QPixmap(get_file(path, 'preview.jpg'))
 
 

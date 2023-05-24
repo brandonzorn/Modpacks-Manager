@@ -27,14 +27,14 @@ class Database:
     @with_lock_thread(lock)
     def add_mod(self, mod: Mod):
         self.__cur.execute("INSERT INTO mods VALUES(?, ?, ?, ?, ?);",
-                           (mod.id, mod.mod_id, 0, mod.name, mod.description))
+                           (mod.id, mod.mod_id, mod.catalog_id, mod.name, mod.description))
         self.__con.commit()
 
     @with_lock_thread(lock)
     def add_mods(self, mods: list[Mod]):
         for mod in mods:
             self.__cur.execute("INSERT INTO mods VALUES(?, ?, ?, ?, ?);",
-                               (mod.id, mod.mod_id, 0, mod.name, mod.description))
+                               (mod.id, mod.mod_id, mod.catalog_id, mod.name, mod.description))
         self.__con.commit()
 
     def get_mod(self, mod_id: str):
@@ -42,7 +42,7 @@ class Database:
         content_id = x[1]
         catalog_id = x[2]
         name = x[3]
-        mod = Mod(content_id, name)
+        mod = Mod(content_id, catalog_id, name)
         mod.description = x[4]
         return mod
 

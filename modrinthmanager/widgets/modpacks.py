@@ -5,6 +5,7 @@ from modrinthmanager.items import Mod
 from modrinthmanager.items.mod_items import Modpack
 from modrinthmanager.parsers.LocalLib import LocalLib
 from modrinthmanager.parsers.Modrinth import Modrinth
+from modrinthmanager.utils.catalog_manager import get_catalog
 from modrinthmanager.utils.threads import Thread
 from modrinthmanager.utils.utils import get_mod_preview, save_version, check_version_exists
 
@@ -61,7 +62,8 @@ class ModpacksWidget(QWidget):
         for mod in self.mods:
             self._progress_signal.emit(mod)
             modpack = Modpack(mod.get_name(), version, loader, [])
-            mod_versions = Modrinth.get_versions(mod, modpack)
+            catalog = get_catalog(mod.catalog_id)
+            mod_versions = catalog.get_versions(mod, modpack)
             if mod_versions:
                 mod_version = mod_versions[0]
                 if not check_version_exists(modpack, mod_version):

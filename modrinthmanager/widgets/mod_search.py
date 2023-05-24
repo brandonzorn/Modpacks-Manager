@@ -1,12 +1,13 @@
-from PySide6.QtCore import Slot
-from PySide6.QtWidgets import QWidget, QListWidgetItem
+from PySide6.QtCore import Slot, QThreadPool
+from PySide6.QtWidgets import QWidget, QRadioButton
 
 from data.ui.mod_search import Ui_Form
 from modrinthmanager.dialogs.ModInfo import ModInfo
 from modrinthmanager.items.mod_items import Mod
-from modrinthmanager.parsers.Modrinth import Modrinth
+from modrinthmanager.items.other_items import RequestForm
+from modrinthmanager.parsers import CurseForge, Modrinth
 from modrinthmanager.utils.threads import Thread
-from modrinthmanager.utils.utils import get_mod_preview
+from modrinthmanager.widgets.mod_item import ModItem
 
 
 class ModSearch(QWidget):
@@ -21,7 +22,15 @@ class ModSearch(QWidget):
         self.info = None
         self.mods: list[Mod] = []
 
-        self.cur_page = 1
+        self.req_params = RequestForm()
+
+        self.mod_thread_pool = QThreadPool()
+        self.order_items = {}
+        self.loader_items = {}
+        self.catalog = CurseForge
+        self.setup_filters()
+
+
 
         self._get_content_thread = Thread(target=self._get_content, callback=self.update_content)
 
@@ -34,46 +43,55 @@ class ModSearch(QWidget):
 
     @Slot()
     def turn_page_next(self):
-        if self.cur_page == 999:
+        if self.req_params.page == 999:
             return
-        self.cur_page += 1
+        self.req_params.page += 1
         self.get_content()
 
     @Slot()
     def turn_page_prev(self):
-        if self.cur_page == 1:
+        if self.req_params.page == 1:
             return
-        self.cur_page -= 1
+        self.req_params.page -= 1
         self.get_content()
 
     def update_page(self):
-        self.ui.page_lbl.setText(f"{'Page'} {self.cur_page}")
+        self.ui.page_lbl.setText(f"{'Page'} {self.req_params.page}")
 
     def get_content(self):
         self.update_page()
         self._get_content_thread.terminate()
         self._get_content_thread.wait()
+        self.ui.items_list.clear()
         self._get_content_thread.start()
 
     def _get_content(self):
-        version = self.ui.version_line.text()
-        mod_loader = self.ui.modloader_line.text()
-        facets = []
-        if version:
-            facets.append(f'["versions:{version}"]')
-        if mod_loader:
-            facets.append(f'["categories:{mod_loader.lower()}"]')
-        params = {'query': self.ui.search_line.text(), 'offset': (self.cur_page - 1) * 10,
-                  "facets": f'[{", ".join(facets)}]' if facets else None}
-        self.mods = Modrinth.search(params)
+        self.req_params.version = self.ui.version_line.text()
+        self.req_params.loader = self.get_cur_loader()
+        self.req_params.loaders = self.get_cur_loader()
+        self.req_params.search = self.ui.search_line.text()
+        self.mods = self.catalog.search(self.req_params)
+        self.mod_thread_pool.setMaxThreadCount(len(self.mods))
 
     def update_content(self):
-        self.ui.items_list.clear()
         for mod in self.mods:
-            item = QListWidgetItem(mod.get_name())
-            item.setIcon(get_mod_preview(mod))
+            item = ModItem(mod, self.mod_thread_pool)
             self.ui.items_list.addItem(item)
 
     def open_mod_info(self):
-        self.info = ModInfo(self.mods[self.ui.items_list.currentIndex().row()])
-        self.info.show()
+        self.info = ModInfo(self.mods[self.ui.items_list.currentIndex().row()], self)
+        self.info.exec()
+
+    def setup_filters(self):
+        for i in self.catalog.get_loaders():
+            item = QRadioButton(i.get_name())
+            if not self.loader_items:
+                item.setChecked(True)
+            self.ui.modloader_grid.addWidget(item)
+            self.loader_items.update({item: i})
+        self.ui.modloader_frame.setVisible(bool(self.loader_items))
+
+    def get_cur_loader(self):
+        for i in self.loader_items:
+            if i.isChecked():
+                return self.loader_items[i].value

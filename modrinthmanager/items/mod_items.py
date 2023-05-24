@@ -1,7 +1,11 @@
+from enum import Enum, unique
+
+
 class Mod:
-    def __init__(self, mod_id, name):
-        self.id = f'||_|{mod_id}|'
+    def __init__(self, mod_id, catalog_id: int, name):
+        self.id = f'|{catalog_id}|_|{mod_id}|'
         self.mod_id = mod_id
+        self.catalog_id = catalog_id
         self.name = name
         self.description = None
         self.icon_url = None
@@ -31,3 +35,11 @@ class Modpack:
 
     def get_name(self):
         return f"{self.name}-{self.modloader} {self.version}"
+
+
+@unique
+class ModLoaders(Enum):
+    Any = 0
+    Forge = 1
+    Fabric = 4
+    Quilt = 5
