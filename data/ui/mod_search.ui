@@ -29,7 +29,7 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_4">
      <item>
-      <widget class="QFrame" name="frame_4">
+      <widget class="QFrame" name="search_frame">
        <property name="frameShape">
         <enum>QFrame::StyledPanel</enum>
        </property>
@@ -125,6 +125,28 @@
     </layout>
    </item>
    <item>
+    <widget class="QFrame" name="catalogs_frame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_6">
+      <item>
+       <widget class="QListWidget" name="catalogs_list">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QWidget" name="filters_widget" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
@@ -187,6 +209,13 @@
           <layout class="QGridLayout" name="modloader_grid"/>
          </item>
         </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="catalogs_btn">
+        <property name="text">
+         <string>Catalogs</string>
+        </property>
        </widget>
       </item>
       <item>

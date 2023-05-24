@@ -1,6 +1,3 @@
-from modrinthmanager.items import Loader
-
-
 class RequestForm:
     def __init__(self):
         self.order = None
