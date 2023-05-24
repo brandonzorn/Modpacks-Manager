@@ -1,6 +1,7 @@
-from PySide6.QtCore import Slot, Signal
+from PySide6.QtCore import Slot, Signal, QThreadPool
 from PySide6.QtWidgets import QWidget, QListWidgetItem
 from data.ui.modpacks import Ui_Form
+from modrinthmanager.dialogs.ModInfo import ModInfo
 from modrinthmanager.items import Mod
 from modrinthmanager.items.mod_items import Modpack
 from modrinthmanager.parsers.LocalLib import LocalLib
@@ -8,6 +9,7 @@ from modrinthmanager.parsers.Modrinth import Modrinth
 from modrinthmanager.utils.catalog_manager import get_catalog
 from modrinthmanager.utils.threads import Thread
 from modrinthmanager.utils.utils import get_mod_preview, save_version, check_version_exists
+from modrinthmanager.widgets.mod_item import ModItem
 
 
 class ModpacksWidget(QWidget):
@@ -18,8 +20,10 @@ class ModpacksWidget(QWidget):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
+        self.ui.items_list.doubleClicked.connect(self.open_mod_info)
         self.mods: list[Mod] = []
         self.catalog = LocalLib()
+        self.mod_thread_pool = QThreadPool()
         self._progress_signal.connect(self.update_download_info)
         self._download_all_thread = Thread(target=self.download_all, callback=self.finish_download_info)
 
@@ -31,11 +35,16 @@ class ModpacksWidget(QWidget):
     def update_content(self):
         self.ui.items_list.clear()
         self.mods = self.catalog.search_mods()
+        self.mod_thread_pool.setMaxThreadCount(len(self.mods))
         self.mods.sort(key=lambda x: x.get_name())
         for mod in self.mods:
-            item = QListWidgetItem(mod.get_name())
-            item.setIcon(get_mod_preview(mod))
+            item = ModItem(mod, self.mod_thread_pool)
             self.ui.items_list.addItem(item)
+
+    def open_mod_info(self):
+        mod = self.mods[self.ui.items_list.currentIndex().row()]
+        info = ModInfo(get_catalog(mod.catalog_id).get_mod(mod), self)
+        info.exec()
 
     @Slot()
     def start_download(self):

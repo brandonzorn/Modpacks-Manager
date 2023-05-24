@@ -5,6 +5,7 @@ from data.ui.mod_info import Ui_Dialog
 from modrinthmanager.items.mod_items import Mod, Modpack
 from modrinthmanager.parsers import CurseForge
 from modrinthmanager.utils import Database
+from modrinthmanager.utils.catalog_manager import get_catalog
 from modrinthmanager.utils.utils import save_version, get_mod_preview, check_version_exists
 
 
@@ -19,7 +20,7 @@ class ModInfo(QDialog):
         self.db = Database()
         self.mod_pixmap = None
         self.mod = mod
-        self.catalog = CurseForge
+        self.catalog = get_catalog(mod.catalog_id)
         self.db.add_mod(self.mod)
         self.versions = []
 

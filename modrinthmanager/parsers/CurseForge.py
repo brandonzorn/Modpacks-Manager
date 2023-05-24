@@ -13,6 +13,14 @@ class CurseForge(Parser):
     ITEMS = CurseforgeItems
 
     @staticmethod
+    def get_mod(mod: Mod):
+        response = requests.get(f'{URL_CURSEFORGE_API}/v1/mods/{mod.mod_id}', headers=CURSEFORGE_HEADERS)
+        if response.status_code == 200 and response.json():
+            mod_data = response.json()['data']
+            mod.icon_url = mod_data['logo']['thumbnailUrl']
+        return mod
+
+    @staticmethod
     def search(req_form: RequestForm):
         params = {'gameId': '432', 'classId': '6', 'searchFilter': req_form.search,
                   'sortField': '1', 'sortOrder': "desc",

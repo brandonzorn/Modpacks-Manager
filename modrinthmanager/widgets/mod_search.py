@@ -6,7 +6,7 @@ from modrinthmanager.dialogs.ModInfo import ModInfo
 from modrinthmanager.items.mod_items import Mod
 from modrinthmanager.items.other_items import RequestForm
 from modrinthmanager.parsers import CurseForge, Modrinth
-from modrinthmanager.utils.catalog_manager import USER_CATALOGS
+from modrinthmanager.utils.catalog_manager import USER_CATALOGS, get_catalog
 from modrinthmanager.utils.threads import Thread
 from modrinthmanager.widgets.mod_item import ModItem
 
@@ -96,8 +96,9 @@ class ModSearch(QWidget):
             self.ui.items_list.addItem(item)
 
     def open_mod_info(self):
-        self.info = ModInfo(self.mods[self.ui.items_list.currentIndex().row()], self)
-        self.info.exec()
+        mod = self.mods[self.ui.items_list.currentIndex().row()]
+        info = ModInfo(get_catalog(mod.catalog_id).get_mod(mod), self)
+        info.exec()
 
     def setup_filters(self):
         self.clear_filters()

@@ -13,6 +13,14 @@ class Modrinth(Parser):
     ITEMS = ModrinthItems
 
     @staticmethod
+    def get_mod(mod: Mod):
+        response = requests.get(f'{URL_MODRINTH_API}/project/{mod.mod_id}', headers=MODRINTH_HEADERS)
+        if response.status_code == 200 and response.json():
+            mod_data = response.json()
+            mod.icon_url = mod_data.get('icon_url')
+        return mod
+
+    @staticmethod
     def search(req_form: RequestForm):
         facets = []
         if req_form.version:

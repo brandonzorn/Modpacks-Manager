@@ -17,7 +17,7 @@ class Database:
         self.__cur = self.__con.cursor()
         self.__cur.execute(
             """CREATE TABLE IF NOT EXISTS mods (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
-        content_id STRING NOT NULL, catalog_id INTEGER NOT NULL, name STRING, description TEXT,
+        content_id STRING NOT NULL, catalog_id INTEGER NOT NULL, name STRING NOT NULL, description TEXT,
         icon_url STRING NOT NULL);
             """)
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS modpacks
