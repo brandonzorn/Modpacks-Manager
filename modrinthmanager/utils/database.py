@@ -20,8 +20,7 @@ class Database:
         content_id STRING NOT NULL, catalog_id INTEGER NOT NULL, name STRING, description TEXT);
             """)
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS modpacks
-        (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL, name STRING NOT NULL, version STRING NOT NULL,
-        modloader STRING NOT NULL)
+        (mod_id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL, modpack STRING NOT NULL)
             """)
         self.__con.commit()
 

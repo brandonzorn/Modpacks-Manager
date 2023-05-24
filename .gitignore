@@ -3,7 +3,7 @@
 /.idea
 /Downloads
 /dist
-/build
+/build*
 ModM*.bat
 ModM*.sh
 ModrinthManager.spec
