@@ -1,14 +1,10 @@
 import requests
 
-from keys import CURSEFORGE_API_KEY
 from modrinthmanager.consts.items import CurseforgeItems
+from modrinthmanager.consts.urls import URL_CURSEFORGE_API, CURSEFORGE_HEADERS
 from modrinthmanager.items.mod_items import Mod, ModVersion
 from modrinthmanager.items.other_items import RequestForm
 from modrinthmanager.parsers.Parser import Parser
-
-
-URL_CURSEFORGE_API = "https://api.curseforge.com"
-CURSEFORGE_HEADERS = {'Accept': 'application/json', 'x-api-key': CURSEFORGE_API_KEY}
 
 
 class CurseForge(Parser):

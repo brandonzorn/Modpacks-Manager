@@ -1,10 +1,10 @@
 *.pyc
 keys.py
-/ModrinthManagerData
+/ModpacksManagerData
 /.idea
 /Downloads
 /dist
 /build*
 ModM*.bat
 ModM*.sh
-ModrinthManager.spec
+ModpacksManager.spec

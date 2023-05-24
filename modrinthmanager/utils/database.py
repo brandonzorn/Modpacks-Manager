@@ -17,7 +17,8 @@ class Database:
         self.__cur = self.__con.cursor()
         self.__cur.execute(
             """CREATE TABLE IF NOT EXISTS mods (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
-        content_id STRING NOT NULL, catalog_id INTEGER NOT NULL, name STRING, description TEXT);
+        content_id STRING NOT NULL, catalog_id INTEGER NOT NULL, name STRING, description TEXT,
+        icon_url STRING NOT NULL);
             """)
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS modpacks
         (mod_id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL, modpack STRING NOT NULL)
@@ -26,15 +27,15 @@ class Database:
 
     @with_lock_thread(lock)
     def add_mod(self, mod: Mod):
-        self.__cur.execute("INSERT INTO mods VALUES(?, ?, ?, ?, ?);",
-                           (mod.id, mod.mod_id, mod.catalog_id, mod.name, mod.description))
+        self.__cur.execute("INSERT INTO mods VALUES(?, ?, ?, ?, ?, ?);",
+                           (mod.id, mod.mod_id, mod.catalog_id, mod.name, mod.description, mod.icon_url))
         self.__con.commit()
 
     @with_lock_thread(lock)
     def add_mods(self, mods: list[Mod]):
         for mod in mods:
-            self.__cur.execute("INSERT INTO mods VALUES(?, ?, ?, ?, ?);",
-                               (mod.id, mod.mod_id, mod.catalog_id, mod.name, mod.description))
+            self.__cur.execute("INSERT INTO mods VALUES(?, ?, ?, ?, ?, ?);",
+                               (mod.id, mod.mod_id, mod.catalog_id, mod.name, mod.description, mod.icon_url))
         self.__con.commit()
 
     def get_mod(self, mod_id: str):
@@ -44,6 +45,7 @@ class Database:
         name = x[3]
         mod = Mod(content_id, catalog_id, name)
         mod.description = x[4]
+        mod.icon_url = [5]
         return mod
 
     @with_lock_thread(lock)
@@ -53,7 +55,7 @@ class Database:
 
     @with_lock_thread(lock)
     def get_mods_modpack(self, modpack="Test") -> list[Mod]:
-        a = self.__cur.execute(f"SELECT mod_id FROM modpacks;").fetchall()
+        a = self.__cur.execute(f"SELECT mod_id FROM modpacks WHERE modpack = '{modpack}';").fetchall()
         mods = []
         for i in a[::-1]:
             mods.append(self.get_mod(i[0]))

@@ -1,8 +1,9 @@
+import os
 import sys
 import time
 
+import platformdirs
 from PySide6.QtCore import Qt, QTranslator
-from PySide6.QtGui import QIcon
 
 import nlight_res_rc
 import darkdetect
@@ -69,6 +70,7 @@ if __name__ == '__main__':
     QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.RoundPreferFloor)
     QApplication.setStyle('Fusion')
     app = App(sys.argv)
+    os.makedirs(f'{platformdirs.user_data_dir()}/{APP_NAME}', exist_ok=True)
     app.setStyleSheet(get_ui_style(darkdetect.theme()))
     window = MainWindow()
     sys.exit(app.exec())

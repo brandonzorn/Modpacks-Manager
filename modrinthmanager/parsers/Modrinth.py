@@ -1,12 +1,10 @@
 import requests
 
 from modrinthmanager.consts.items import ModrinthItems
+from modrinthmanager.consts.urls import URL_MODRINTH_API, MODRINTH_HEADERS
 from modrinthmanager.items.mod_items import Mod, ModVersion
 from modrinthmanager.items.other_items import RequestForm
 from modrinthmanager.parsers.Parser import Parser
-
-URL_MODRINTH_API = "https://api.modrinth.com/v2"
-MODRINTH_HEADERS = {"User-Agent": "ModrinthManager"}
 
 
 class Modrinth(Parser):
