@@ -1,2 +1,2 @@
-# ModrinthManager
-GUI based Modrinth mod downloader
+# ModpacksManager
+GUI based Modrinth and CurseForge minecraft mod downloader
