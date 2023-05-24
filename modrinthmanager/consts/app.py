@@ -1,2 +1,2 @@
-APP_NAME = "ModrinthManager"
-APP_VERSION = "0.1.0"
+APP_NAME = "ModpacksManager"
+APP_VERSION = "0.2.0"
