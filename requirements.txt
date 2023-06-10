@@ -1,0 +1,4 @@
+PySide6>=6.3.0
+platformdirs>=3.5.1
+darkdetect>=0.8.0
+requests>=2.31.0
