@@ -1,14 +1,11 @@
 import os.path
-from typing import Callable
 
 import platformdirs
-from PySide6.QtCore import QThreadPool, QRunnable, Slot, Signal, QObject
 from PySide6.QtGui import QPixmap
 
 from modrinthmanager.consts.app import APP_NAME
 from modrinthmanager.consts.files import Styles
 from modrinthmanager.items.mod_items import Mod, ModVersion, Modpack
-from modrinthmanager.parsers.Modrinth import Modrinth
 from modrinthmanager.utils.catalog_manager import get_catalog
 
 
@@ -60,42 +57,3 @@ def get_ui_style(style: str):
     light = Styles.Light
     themes = {"Dark": dark, "Light": light}
     return themes[style]
-
-
-class Signals(QObject):
-    finished = Signal()
-
-    def __init__(self):
-        super().__init__()
-
-
-class Worker(QRunnable):
-    def __init__(self, target: Callable, args=(), kwargs=None, *, callback=None, locker=None):
-        super(Worker, self).__init__()
-        if kwargs is None:
-            kwargs = {}
-        self._target = target
-        self._args = args
-        self._kwargs = kwargs
-        self._locker = locker
-        self.signals = Signals()
-        if callback:
-            self.signals.finished.connect(callback)
-
-    @Slot()
-    def run(self):
-        if self._locker:
-            while not self._locker.tryLock():
-                pass
-            self._target(*self._args, **self._kwargs)
-            self._locker.unlock()
-        else:
-            self._target(*self._args, **self._kwargs)
-        self.signals.finished.emit()
-
-    def start(self, pool=None):
-        if pool is None:
-            pool = QThreadPool.globalInstance()
-        if pool.activeThreadCount() == pool.maxThreadCount():
-            return
-        pool.start(self)

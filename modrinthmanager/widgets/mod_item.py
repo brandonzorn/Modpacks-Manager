@@ -1,7 +1,8 @@
 from PySide6.QtWidgets import QListWidgetItem
 
 from modrinthmanager.items import Mod
-from modrinthmanager.utils.utils import get_mod_preview, Worker
+from modrinthmanager.utils.threads import Worker
+from modrinthmanager.utils.utils import get_mod_preview
 
 
 class ModItem(QListWidgetItem):
